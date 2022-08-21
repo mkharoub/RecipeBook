@@ -1,0 +1,13 @@
+<div class="ingredients list-group" *ngIf="ingredients;else noIngredients">
+  <div class="mb-3">
+    <fe-ingredient-edit></fe-ingredient-edit>
+  </div>
+  <div class="ingredient list-group-item" role="button"
+       *ngFor="let ingredient of ingredients; let index=index"
+       (click)="onSelect(index)">
+    {{ingredient.name}}({{ingredient.amount}})
+  </div>
+</div>
+<ng-template #noIngredients>
+  <div class="alert alert-danger">No Ingredients!</div>
+</ng-template>

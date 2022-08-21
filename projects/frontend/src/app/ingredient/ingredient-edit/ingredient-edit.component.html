@@ -1,0 +1,17 @@
+<form (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-6">
+      <input type="text" class="form-control" [value]="selectedIngredient?.name">
+    </div>
+    <div class="col-6">
+      <input type="number" class="form-control" [value]="selectedIngredient?.amount">
+    </div>
+    <div class="col-12 mt-2">
+      <div class="btn-group" role="group">
+        <button type="submit" class="btn btn-primary">{{editMode ? 'Update': 'Add'}}</button>
+        <button type="button" class="btn btn-danger" (click)="onDelete()" *ngIf="editMode">Delete</button>
+        <button type="button" class="btn btn-outline-primary" (click)="onClear()">clear</button>
+      </div>
+    </div>
+  </div>
+</form>
