@@ -17,9 +17,9 @@
       Manage Recipe
     </button>
     <ul class="dropdown-menu" [ngClass]="{'show': r.show}">
-      <li><a class="dropdown-item" href="#">Action</a></li>
-      <li><a class="dropdown-item" href="#">Another action</a></li>
-      <li><a class="dropdown-item" href="#">Something else here</a></li>
+      <li><a class="dropdown-item" (click)="onAddToShoppingList()">To Shopping List</a></li>
+      <li><a class="dropdown-item" (click)="onEdit()">Edit</a></li>
+      <li><a class="dropdown-item" (click)="onDelete()">Delete</a></li>
     </ul>
   </div>
 </div>

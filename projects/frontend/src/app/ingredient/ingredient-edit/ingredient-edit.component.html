@@ -1,14 +1,24 @@
-<form (ngSubmit)="onSubmit()">
+<form (ngSubmit)="onSubmit()" #ingredientFrom="ngForm">
   <div class="row">
     <div class="col-6">
-      <input type="text" class="form-control" [value]="selectedIngredient?.name">
+      <label for="name">Ingredient Name</label>
+      <input type="text" class="form-control" id="name" name="name" ngModel #name="ngModel" required>
+      <div *ngIf="name.invalid && name.touched" class="alert alert-danger">Name is required</div>
     </div>
     <div class="col-6">
-      <input type="number" class="form-control" [value]="selectedIngredient?.amount">
+      <label for="amount">Amount</label>
+      <input type="number" class="form-control" id="amount" name="amount" ngModel #amount="ngModel" required min="1"
+             max="10">
+      <div *ngIf="amount.invalid && amount.touched" class="alert alert-danger">
+        <span *ngIf="amount.errors?.['required']">Name is required</span>
+        <span *ngIf="amount.errors?.['min'] || amount.errors?.['max']">Field value must be between 1 - 10</span>
+      </div>
     </div>
     <div class="col-12 mt-2">
       <div class="btn-group" role="group">
-        <button type="submit" class="btn btn-primary">{{editMode ? 'Update': 'Add'}}</button>
+        <button type="submit" class="btn btn-primary" [disabled]="ingredientFrom.invalid">
+          {{editMode ? 'Update' : 'Add'}}
+        </button>
         <button type="button" class="btn btn-danger" (click)="onDelete()" *ngIf="editMode">Delete</button>
         <button type="button" class="btn btn-outline-primary" (click)="onClear()">clear</button>
       </div>
