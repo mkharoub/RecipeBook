@@ -30,6 +30,11 @@ export class IngredientService {
     this.ingredientsChangedSub.next(this.getIngredients());
   }
 
+  addIngredients(ingredients: Ingredient[]) {
+    this.ingredients = this.ingredients.concat(ingredients);
+    this.ingredientsChangedSub.next(this.getIngredients());
+  }
+
   updateIngredient(ingredient: Ingredient, id: number) {
     this.ingredients[id] = ingredient;
     this.ingredientsChangedSub.next(this.getIngredients());

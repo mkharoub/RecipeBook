@@ -1,1 +1,52 @@
-<p>recipe-edit works!</p>
+<form *ngIf="recipeForm; else errorWithRecipeForm" [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+  <div class="d-flex justify-content-end mb-3">
+    <div class="btn-group" role="group">
+      <button class="btn btn-primary" type="submit" [disabled]="recipeForm.invalid">
+        <span *ngIf="!editMode">Save</span>
+        <span *ngIf="editMode">Update</span>
+      </button>
+      <button class="btn btn-danger" (click)="onCancel()" type="button">Cancel</button>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" name="name" id="name" class="form-control" [formControlName]="'name'" #name>
+  </div>
+  <div class="mb-3">
+    <label for="imagePath" class="form-label">Image Path</label>
+    <input type="text"
+           name="imagePath"
+           id="imagePath"
+           class="form-control mb-1"
+           [formControlName]="'imagePath'"
+           #imagePath
+    >
+    <img *ngIf="imagePath.value"
+         src="{{imagePath.value}}"
+         alt="{{name.value}}"
+         width="120"
+         height="120"
+         class="img-thumbnail rounded"
+    >
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea name="description" id="description" class="form-control" [formControlName]="'description'"></textarea>
+  </div>
+  <div class="mb-3">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <label>Ingredients</label>
+      <button class="btn btn-outline-primary" (click)="onAddIngredient()" type="button">+</button>
+    </div>
+    <div class="d-flex flex-column gap-3" formArrayName="ingredients">
+      <div *ngFor="let ingredient of ingredientControls; let i = index;" [formGroupName]="i" class="d-flex gap-3">
+        <input type="text" name="name" class="form-control" [formControlName]="'name'">
+        <input type="text" name="amount" class="form-control" [formControlName]="'amount'">
+        <button class="btn btn-danger" (click)="onDeleteIngredient(i)" type="button">X</button>
+      </div>
+    </div>
+  </div>
+</form>
+<ng-template #errorWithRecipeForm>
+  <p>An error occurred with the recipe edit form</p>
+</ng-template>

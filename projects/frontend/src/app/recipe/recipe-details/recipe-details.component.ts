@@ -2,8 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {RecipeService} from "../recipe.service";
 import {Recipe} from "../recipe.model";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
+import {IngredientService} from "../../ingredient/ingredient.service";
 
 @Component({
   selector: 'fe-recipe-details',
@@ -13,13 +14,19 @@ import {Subscription} from "rxjs";
 export class RecipeDetailsComponent implements OnInit, OnDestroy {
   recipe: Recipe | undefined;
   paramsSub$: Subscription | undefined;
+  selectedRecipeId: number | undefined;
 
-  constructor(private recipeService: RecipeService, private route: ActivatedRoute) {
+  constructor(
+    private recipeService: RecipeService,
+    private ingredientService: IngredientService,
+    private route: ActivatedRoute,
+    private router: Router) {
   }
 
   ngOnInit(): void {
     this.paramsSub$ = this.route.params.subscribe(params => {
-      this.recipe = this.recipeService.getRecipe(+params['id']);
+      this.selectedRecipeId = +params['id'];
+      this.recipe = this.recipeService.getRecipe(this.selectedRecipeId);
     });
   }
 
@@ -27,9 +34,12 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
     this.paramsSub$?.unsubscribe();
   }
 
-  onAddToShoppingList() {}
+  onAddToShoppingList() {
+    this.ingredientService.addIngredients(this.recipe?.ingredients as any);
+  }
 
-  onEdit() {}
-
-  onDelete() {}
+  onDelete() {
+    this.recipeService.deleteRecipe(this.selectedRecipeId as any);
+    this.router.navigate(['/recipe']);
+  }
 }

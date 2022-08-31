@@ -1,17 +1,16 @@
 <div class="row">
   <div class="col-6">
-    <a routerLink="/recipe/new" class="btn btn-primary">New Recipe</a>
-    <hr>
+    <a routerLink="/recipe/new" class="btn btn-primary mb-3">New Recipe</a>
     <div class="recipe-items list-group" *ngIf="recipes">
       <a class="recipe-item d-flex align-items-center justify-content-between text-decoration-none list-group-item"
          *ngFor="let recipe of recipes; let index=index"
          routerLink="{{index}}">
         <div style="max-width: 65%">
-          <h3>{{recipe.title}}</h3>
+          <h3>{{recipe.name}}</h3>
           <p>{{recipe.description}}</p>
         </div>
         <div style="height: 110px; width: 110px; overflow: hidden">
-          <img src="{{recipe.imgPath}}" alt="{{recipe.title}}" class="img-fluid">
+          <img src="{{recipe.imagePath}}" alt="{{recipe.name}}" class="img-fluid">
         </div>
       </a>
     </div>
