@@ -1,16 +1,15 @@
-import { NgModule } from '@angular/core';
-import { UiComponent } from './ui.component';
+import {NgModule} from '@angular/core';
 
-
+import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
-    UiComponent
+    LoadingSpinnerComponent
   ],
-  imports: [
-  ],
+  imports: [],
   exports: [
-    UiComponent
+    LoadingSpinnerComponent
   ]
 })
-export class UiModule { }
+export class UiModule {
+}

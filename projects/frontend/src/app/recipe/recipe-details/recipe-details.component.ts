@@ -15,6 +15,8 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
   recipe: Recipe | undefined;
   paramsSub$: Subscription | undefined;
   selectedRecipeId: number | undefined;
+  fetchingRecipesSub$: Subscription | undefined;
+  loading = false;
 
   constructor(
     private recipeService: RecipeService,
@@ -28,10 +30,15 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
       this.selectedRecipeId = +params['id'];
       this.recipe = this.recipeService.getRecipe(this.selectedRecipeId);
     });
+
+    this.fetchingRecipesSub$ = this.recipeService.fetchingRecipesSub.subscribe(isFetching => {
+      this.loading = isFetching;
+    });
   }
 
   ngOnDestroy() {
     this.paramsSub$?.unsubscribe();
+    this.fetchingRecipesSub$?.unsubscribe();
   }
 
   onAddToShoppingList() {

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {retry, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 
 import {RecipeService} from "../recipe.service";
@@ -15,6 +15,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   selectedRecipeId: number | undefined;
   recipeForm: FormGroup | undefined;
   editMode: boolean | undefined;
+  fetchingRecipesSub$: Subscription | undefined;
+  loading = false;
 
   constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router) {
   }
@@ -25,10 +27,15 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       this.editMode = !isNaN(this.selectedRecipeId);
       this.initForm();
     });
+
+    this.fetchingRecipesSub$ = this.recipeService.fetchingRecipesSub.subscribe(isFetching => {
+      this.loading = isFetching;
+    });
   }
 
   ngOnDestroy() {
     this.paramsSub$?.unsubscribe();
+    this.fetchingRecipesSub$?.unsubscribe();
   }
 
   onSubmit() {
@@ -88,7 +95,5 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       'imagePath': new FormControl(imagePath, [Validators.required]),
       'ingredients': ingredients,
     });
-
-    console.log(this.recipeForm)
   }
 }

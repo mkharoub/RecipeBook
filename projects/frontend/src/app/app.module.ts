@@ -1,10 +1,11 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from "@angular/common/http";
+import {DirectivesModule} from "directives";
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './components/header/header.component';
-import {DirectivesModule} from "directives";
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import {DirectivesModule} from "directives";
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     DirectivesModule
   ],

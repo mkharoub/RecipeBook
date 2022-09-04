@@ -12,18 +12,26 @@ import {RecipeService} from "./recipe.service";
 export class RecipeComponent implements OnInit, OnDestroy {
   recipes: Recipe[] | undefined;
   recipesChangedSub$: Subscription | undefined;
+  fetchingRecipesSub$: Subscription | undefined;
+  loading = false;
 
   constructor(private recipeService: RecipeService) {
   }
 
   ngOnInit(): void {
     this.recipes = this.recipeService.getRecipes();
-    this.recipeService.recipesChangedSub.subscribe(recipes => {
+
+    this.fetchingRecipesSub$ = this.recipeService.fetchingRecipesSub.subscribe(isFetching => {
+      this.loading = isFetching;
+    });
+
+    this.recipesChangedSub$ = this.recipeService.recipesChangedSub.subscribe(recipes => {
       this.recipes = recipes;
     });
   }
 
   ngOnDestroy() {
     this.recipesChangedSub$?.unsubscribe();
+    this.fetchingRecipesSub$?.unsubscribe();
   }
 }

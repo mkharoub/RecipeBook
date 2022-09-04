@@ -5,6 +5,7 @@ import {RecipeComponent} from "./recipe.component";
 import {RecipeStartComponent} from "./recipe-start/recipe-start.component";
 import {RecipeDetailsComponent} from "./recipe-details/recipe-details.component";
 import {RecipeEditComponent} from "./recipe-edit/recipe-edit.component";
+import {RecipeResolver} from "./recipe.resolver";
 
 const routes: Routes = [
   {
@@ -21,11 +22,13 @@ const routes: Routes = [
       },
       {
         path: ':id',
-        component: RecipeDetailsComponent
+        component: RecipeDetailsComponent,
+        resolve: [RecipeResolver]
       },
       {
         path: ':id/edit',
-        component: RecipeEditComponent
+        component: RecipeEditComponent,
+        resolve: [RecipeResolver]
       },
     ]
   }

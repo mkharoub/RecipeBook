@@ -8,7 +8,9 @@ import {DropdownDirective} from "./dropdown/dropdown.directive";
     DropdownDirective
   ],
   imports: [],
-  exports: [DropdownDirective]
+  exports: [
+    DropdownDirective
+  ]
 })
 export class DirectivesModule {
 }

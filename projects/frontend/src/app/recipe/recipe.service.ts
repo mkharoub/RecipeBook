@@ -1,44 +1,27 @@
 import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {BehaviorSubject, Subject, tap} from "rxjs";
 
 import {Recipe} from "./recipe.model";
-import {Ingredient} from "../ingredient/Ingredient.model";
-import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
-  recipesChangedSub: Subject<Recipe[]> = new Subject<Recipe[]>();
-  recipes: Recipe[] = [
-    new Recipe(
-      'First Recipe',
-      'This is the first recipe',
-      'https://cdn.loveandlemons.com/wp-content/uploads/2020/03/pantry-recipes-2.jpg',
-      [
-        new Ingredient('Tomato', 10),
-        new Ingredient('Apple', 7),
-      ]
-    ),
-    new Recipe(
-      'Second Recipe',
-      'This is the second recipe',
-      'https://images.immediate.co.uk/production/volatile/sites/30/2013/05/Puttanesca-fd5810c.jpg',
-      [
-        new Ingredient('Tomato', 10),
-        new Ingredient('Apple', 7),
-      ]
-    ),
-  ];
+  endPoint = 'https://recipebook-23f1d-default-rtdb.firebaseio.com';
+  recipesChangedSub: Subject<Recipe[]> = new Subject();
+  fetchingRecipesSub: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  recipes: Recipe[] = [];
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
   }
 
   getRecipes() {
-    return this.recipes.slice();
+    return this.recipes;
   }
 
   getRecipe(id: number) {
-    return {...this.recipes[id]}
+    return this.recipes[id]
   }
 
   deleteRecipe(id: number) {
@@ -54,5 +37,24 @@ export class RecipeService {
   addRecipe(recipe: Recipe) {
     this.recipes.push(recipe);
     this.recipesChangedSub.next(this.getRecipes());
+  }
+
+  fetchRecipes() {
+    this.fetchingRecipesSub.next(true);
+
+    return this.httpClient.get<Recipe[]>(`${this.endPoint}/recipes.json`).pipe(tap(recipes => {
+      this.recipes = recipes;
+      this.recipesChangedSub.next(this.getRecipes());
+      this.fetchingRecipesSub.next(false);
+    }));
+  }
+
+  saveRecipes() {
+    this.fetchingRecipesSub.next(true);
+    this.httpClient
+      .put(`${this.endPoint}/recipes.json`, this.getRecipes())
+      .subscribe(() => {
+        this.fetchingRecipesSub.next(false);
+      });
   }
 }

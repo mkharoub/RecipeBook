@@ -1,32 +1,37 @@
-<div class="recipe-details d-flex" *ngIf="recipe; else noRecipe">
-  <div>
-    <div class="mb-3" style="max-width: 100%; max-height: 500px;overflow: hidden">
-      <img src="{{recipe.imagePath}}" alt="{{recipe.name}}" class="img-fluid">
-    </div>
-    <h2 class="mb-1">{{recipe.name}}</h2>
-    <p>{{recipe.description}}</p>
-    <ul class="list-group">
-      <li class="list-group-item" *ngFor="let ingredient of recipe.ingredients">
-        {{ingredient.name}}({{ingredient.amount}})
-      </li>
-    </ul>
-  </div>
-  <div class="dropdown ms-4">
-    <button class="btn btn-secondary dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            attr.aria-expanded="{{r.show ? 'true' : 'false'}}"
-            dvDropdown
-            #r="dvDropdown">
-      Manage Recipe
-    </button>
-    <ul class="dropdown-menu" [ngClass]="{'show': r.show}">
-      <li><a class="dropdown-item" (click)="onAddToShoppingList()" role="button">To Shopping List</a></li>
-      <li><a class="dropdown-item" [routerLink]="'edit'" >Edit</a></li>
-      <li><a class="dropdown-item" (click)="onDelete()" role="button">Delete</a></li>
-    </ul>
-  </div>
+<div class="text-center" *ngIf="loading">
+  <ui-loading-spinner></ui-loading-spinner>
 </div>
-<ng-template #noRecipe>
-  <div class="alert alert-danger">No Recipe!</div>
-</ng-template>
+<div class="recipe-details-wrapper" *ngIf="!loading">
+  <div class="recipe-details d-flex" *ngIf="recipe; else noRecipe">
+    <div>
+      <div class="mb-3" style="max-width: 100%; max-height: 500px;overflow: hidden">
+        <img src="{{recipe.imagePath}}" alt="{{recipe.name}}" class="img-fluid">
+      </div>
+      <h2 class="mb-1">{{recipe.name}}</h2>
+      <p>{{recipe.description}}</p>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let ingredient of recipe.ingredients">
+          {{ingredient.name}}({{ingredient.amount}})
+        </li>
+      </ul>
+    </div>
+    <div class="dropdown ms-4">
+      <button class="btn btn-secondary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              attr.aria-expanded="{{r.show ? 'true' : 'false'}}"
+              dvDropdown
+              #r="dvDropdown">
+        Manage Recipe
+      </button>
+      <ul class="dropdown-menu" [ngClass]="{'show': r.show}">
+        <li><a class="dropdown-item" (click)="onAddToShoppingList()" role="button">To Shopping List</a></li>
+        <li><a class="dropdown-item" [routerLink]="'edit'" >Edit</a></li>
+        <li><a class="dropdown-item" (click)="onDelete()" role="button">Delete</a></li>
+      </ul>
+    </div>
+  </div>
+  <ng-template #noRecipe>
+    <div class="alert alert-danger">No Recipe!</div>
+  </ng-template>
+</div>

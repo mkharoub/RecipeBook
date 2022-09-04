@@ -1,8 +1,11 @@
-<div class="row">
+<div class="text-center" *ngIf="loading">
+  <ui-loading-spinner></ui-loading-spinner>
+</div>
+<div class="row" *ngIf="!loading">
   <div class="col-6">
     <a routerLink="/recipe/new" class="btn btn-primary mb-3">New Recipe</a>
     <div class="recipe-items list-group" *ngIf="recipes">
-      <a class="recipe-item d-flex align-items-center justify-content-between text-decoration-none list-group-item"
+      <a class="recipe-item d-flex align-items-center justify-content-between text-decoration-none list-group-item" routerLinkActive="active"
          *ngFor="let recipe of recipes; let index=index"
          routerLink="{{index}}">
         <div style="max-width: 65%">
